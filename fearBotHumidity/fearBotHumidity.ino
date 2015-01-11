@@ -39,6 +39,8 @@ DHT dht(DHTPIN, DHTTYPE);
 
 //Variables for determining increase or decrease, which appears to be very steady with this sensor.
 int lastHVal = 0;
+int ledPin = 13;
+// make sure that the data stream is consistent before being able to be aroused.
 
 void setup() {
   Serial.begin(9600); 
@@ -46,7 +48,9 @@ void setup() {
   myservo.attach(9);
   dht.begin();
   lastHVal = dht.readHumidity();
+  pinMode(ledPin,OUTPUT);
 }
+
 
 void loop() {
   // Wait a few seconds between measurements.
@@ -82,7 +86,7 @@ void loop() {
   Serial.print(hi);
   Serial.println(" *F");
 
-  if (h > lastHVal && (h-lastHVal) > 5 ){
+  if (h > lastHVal && (h-lastHVal) > 10  && h < 60){
     Serial.println("triggered");
     if (scared == false){
       for(pos = 0; pos <= 180; pos += 1) // goes from 0 degrees to 180 degrees 
@@ -91,6 +95,7 @@ void loop() {
         delay(15);                       // waits 15ms for the servo to reach the position 
       } 
       scared =true;
+      Serial.println("ran away A");
     } 
     else {
       for(pos = 180; pos>=0; pos-=1)     // goes from 180 degrees to 0 degrees 
@@ -99,11 +104,12 @@ void loop() {
         delay(15);                       // waits 15ms for the servo to reach the position 
       }
       scared =false; 
+       Serial.println("ran away B");
     }
-    delay (50000);
+    delay (15000);
   }
   
-  lastHVal = h;
+  lastHVal = dht.readHumidity();
 
 }
 
