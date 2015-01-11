@@ -86,9 +86,10 @@ void loop() {
   Serial.print(hi);
   Serial.println(" *F");
 
-  if (h > lastHVal && (h-lastHVal) > 10  && h < 60){
+  if (h > lastHVal && (h-lastHVal) > 10  && h < 70){
     Serial.println("triggered");
     if (scared == false){
+      digitalWrite(ledPin,HIGH);
       for(pos = 0; pos <= 180; pos += 1) // goes from 0 degrees to 180 degrees 
       {                                  // in steps of 1 degree 
         myservo.write(pos);              // tell servo to go to position in variable 'pos' 
@@ -98,6 +99,7 @@ void loop() {
       Serial.println("ran away A");
     } 
     else {
+      digitalWrite(ledPin,HIGH);
       for(pos = 180; pos>=0; pos-=1)     // goes from 180 degrees to 0 degrees 
       {                                
         myservo.write(pos);              // tell servo to go to position in variable 'pos' 
@@ -110,6 +112,12 @@ void loop() {
   }
   
   lastHVal = dht.readHumidity();
-
+  h = dht.readHumidity();
+  
+  if (h>30){
+    digitalWrite(ledPin,HIGH);
+  } else {
+    digitalWrite(ledPin,LOW);
+  }  
 }
 
