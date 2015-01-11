@@ -86,7 +86,7 @@ void loop() {
   Serial.print(hi);
   Serial.println(" *F");
 
-  if (h > lastHVal && (h-lastHVal) > 10  && h < 70){
+  if (h > lastHVal && (h-lastHVal) > 10  && h < 75){
     Serial.println("triggered");
     if (scared == false){
       digitalWrite(ledPin,HIGH);
